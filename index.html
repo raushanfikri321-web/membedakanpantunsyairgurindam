@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mari Membandingkan Pantun dengan Syair dan Gurindam</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FFF8EC; --ink:#2E2350;
+  --teal:#0FB5AE; --teal-dk:#0B8B85;
+  --coral:#FF6F59; --coral-dk:#E5533F;
+  --yellow:#FFC93C; --purple:#7B5EA7; --pink:#FF8FB1; --green:#3FB27F; --blue:#4A90D9;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;}
+html{scroll-padding-top:env(safe-area-inset-top,64px);}
+html,body{height:100%;}
+body{margin:0; background:var(--bg); color:var(--ink); font-family:'Nunito',ui-sans-serif,system-ui,sans-serif; line-height:1.55; overflow-x:hidden;}
+h1,h2,h3,.display{font-family:'Baloo 2',ui-rounded,sans-serif;}
+.wrap{max-width:780px;margin:0 auto;padding:0 20px;position:relative;}
+
+@keyframes floaty{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-10px) rotate(4deg);}}
+@keyframes floaty2{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(8px) rotate(-5deg);}}
+.deco{position:absolute; pointer-events:none; z-index:0;}
+@media (prefers-reduced-motion: no-preference){
+  .deco.a{animation:floaty 5s ease-in-out infinite;}
+  .deco.b{animation:floaty2 6.5s ease-in-out infinite;}
+}
+
+header{position:relative; overflow:hidden; background:linear-gradient(135deg,var(--coral) 0%,#FF8F7A 55%,var(--yellow) 100%); padding:46px 0 40px; color:#fff;}
+header .eyebrow{font-size:.9rem; font-weight:700; background:rgba(255,255,255,.25); display:inline-block; padding:5px 14px; border-radius:999px;}
+header h1{font-size:2.05rem; font-weight:800; margin:.35em 0 .2em; line-height:1.15; text-shadow:0 3px 0 rgba(0,0,0,.1);}
+header p.desc{max-width:52ch; color:#FFF4EA; margin:0 0 16px; font-weight:600;}
+.meta{font-size:.9rem; background:rgba(255,255,255,.2); display:inline-block; padding:8px 16px; border-radius:12px; font-weight:700;}
+
+nav{position:sticky; top:0; z-index:30; background:#fff; border-bottom:3px solid var(--yellow); padding-top:env(safe-area-inset-top,0px); box-shadow:0 2px 10px rgba(0,0,0,.05);}
+nav .navrow{display:flex; gap:8px; max-width:780px; margin:0 auto; padding:10px 20px; overflow-x:auto;}
+nav button{font-family:'Baloo 2',sans-serif; font-size:1rem; font-weight:700; color:var(--purple); background:#F1ECFB; border:none; padding:9px 18px; border-radius:14px; cursor:pointer; white-space:nowrap; transition:transform .15s, background .15s, color .15s;}
+nav button:hover{transform:translateY(-2px);}
+nav button[aria-selected="true"]{background:var(--coral); color:#fff; box-shadow:0 4px 0 var(--coral-dk);}
+nav button:focus-visible{outline:3px solid var(--purple); outline-offset:2px;}
+
+section.panel{display:none; padding:34px 0 60px; position:relative; z-index:1;}
+section.panel.active{display:block;}
+h2.section-title{font-size:1.5rem; color:var(--purple); margin:26px 0 6px; font-weight:800;}
+h2.section-title:first-child{margin-top:0;}
+.sub{color:#5c5478; margin:0 0 20px; font-size:.95rem; font-weight:600;}
+
+.puisi{background:#fff; border:3px dashed var(--teal); position:relative; padding:16px 20px; border-radius:18px; margin:14px 0; font-family:'Baloo 2',sans-serif; font-size:1rem; color:var(--ink); font-weight:600;}
+.puisi p{margin:0 0 10px;}
+.puisi p:last-child{margin-bottom:0;}
+.puisi.gurindam{border-color:var(--purple);}
+.puisi .src{font-family:'Nunito',sans-serif; font-size:.78rem; color:#8a7fa8; font-weight:600; font-style:italic; margin-top:10px;}
+
+.card{background:#fff; border-radius:16px; padding:16px 20px; margin:14px 0; box-shadow:0 4px 14px rgba(60,40,120,.08); border-left:6px solid var(--green);}
+.card h3{margin:0 0 8px; font-size:1.1rem; color:var(--teal-dk);}
+
+.func-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; margin:16px 0;}
+.func-card{background:#fff; border-radius:14px; padding:14px 16px; box-shadow:0 4px 14px rgba(60,40,120,.07); border-top:5px solid var(--yellow); font-size:.9rem; font-weight:600; color:#5c5478;}
+
+table.gram{width:100%; border-collapse:collapse; margin:12px 0 18px; font-size:.88rem;}
+table.gram th{background:var(--purple); color:#fff; font-family:'Baloo 2',sans-serif; padding:9px 10px; text-align:left;}
+table.gram td{padding:9px 10px; border-bottom:1px solid #F1ECFB; font-weight:600; vertical-align:top;}
+table.gram tr:nth-child(even) td{background:#FBF9FF;}
+table.gram ul{margin:0; padding-left:18px;}
+
+.list-card{background:#fff; border-radius:16px; padding:16px 20px; margin:14px 0; box-shadow:0 4px 14px rgba(60,40,120,.08); border-top:5px solid var(--blue);}
+.list-card ul{margin:8px 0 0; padding-left:20px;}
+.list-card li{margin:6px 0; font-weight:600;}
+
+.latihan-item{background:#fff; border-radius:18px; padding:18px 20px; margin:18px 0; box-shadow:0 4px 14px rgba(60,40,120,.08); border-top:6px solid var(--pink);}
+.latihan-item .nomor{font-family:'Baloo 2',sans-serif; font-size:.9rem; color:var(--coral-dk); font-weight:800;}
+textarea{width:100%; min-height:75px; margin-top:10px; padding:12px 14px; font-family:inherit; font-size:.95rem; border:2px solid #E7DEF7; border-radius:12px; background:#FBF9FF; color:var(--ink); resize:vertical; font-weight:600;}
+textarea:focus-visible, button:focus-visible{outline:3px solid var(--purple); outline-offset:1px;}
+.reveal-btn{margin-top:12px; background:var(--teal); color:#fff; border:none; border-radius:12px; padding:10px 18px; font-family:'Baloo 2',sans-serif; font-weight:700; cursor:pointer; font-size:.92rem; box-shadow:0 4px 0 var(--teal-dk);}
+.reveal-btn:active{transform:translateY(2px); box-shadow:0 2px 0 var(--teal-dk);}
+.kunci{display:none; margin-top:12px; padding:14px 16px; background:#FFF3D6; border-radius:12px; font-size:.9rem; color:#5c4a1a; font-weight:600;}
+.kunci.show{display:block;}
+
+.checklist{background:#fff; border-radius:18px; padding:18px 20px; margin:18px 0; box-shadow:0 4px 14px rgba(60,40,120,.08); border-top:6px solid var(--blue);}
+.chk-row{display:flex; align-items:flex-start; gap:10px; padding:9px 0; border-bottom:1px solid #F1ECFB; font-weight:600; font-size:.93rem;}
+.chk-row input{margin-top:4px; width:18px; height:18px; accent-color:var(--green); flex-shrink:0;}
+.check-btn{margin-top:14px; background:var(--yellow); color:#5c4a1a; border:none; border-radius:12px; padding:10px 18px; font-family:'Baloo 2',sans-serif; font-weight:800; cursor:pointer; font-size:.92rem; box-shadow:0 4px 0 #D9A825;}
+.check-btn:active{transform:translateY(2px); box-shadow:0 2px 0 #D9A825;}
+.feedback{margin-top:12px; padding:12px 14px; border-radius:12px; font-size:.9rem; display:none; font-weight:700;}
+.feedback.correct{display:block; background:#E1F7EC; color:var(--green); border:2px solid #B8E9CC;}
+.feedback.info{display:block; background:#EFF4FB; color:#2C5A8A; border:2px solid #CBDEF2;}
+
+.gloss-item{background:#fff; border-radius:14px; padding:15px 18px; margin:12px 0; box-shadow:0 4px 14px rgba(60,40,120,.07); border-left:6px solid var(--pink);}
+.gloss-item dt{font-family:'Baloo 2',sans-serif; font-weight:800; color:var(--purple); font-size:1.05rem;}
+.gloss-item dd{margin:.35em 0 0; color:#4a4160; font-weight:600; font-size:.92rem;}
+
+footer{text-align:center; padding:24px 20px calc(24px + env(safe-area-inset-bottom,0px)); color:#8a7fa8; font-size:.85rem; font-weight:700; border-top:2px solid #F1ECFB;}
+
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --bg:#231C3A; --ink:#F3EEFF; }
+  :root:not([data-theme="light"]) .card, :root:not([data-theme="light"]) .func-card, :root:not([data-theme="light"]) .latihan-item, :root:not([data-theme="light"]) .gloss-item, :root:not([data-theme="light"]) .puisi, :root:not([data-theme="light"]) table.gram td, :root:not([data-theme="light"]) .list-card, :root:not([data-theme="light"]) .checklist{background:#2C2450;}
+  :root:not([data-theme="light"]) nav{background:#2C2450;}
+  :root:not([data-theme="light"]) textarea{background:#231C3A; color:#F3EEFF; border-color:#443a6b;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="decos" aria-hidden="true">
+    <svg class="deco a" style="left:6%; top:18px; width:58px; height:58px;" viewBox="0 0 58 58"><circle cx="29" cy="29" r="25" fill="#fff" opacity="0.25"/></svg>
+    <svg class="deco b" style="right:8%; top:10px; width:64px; height:64px;" viewBox="0 0 64 64"><path d="M32 4 L39 25 L60 25 L43 38 L50 60 L32 46 L14 60 L21 38 L4 25 L25 25 Z" fill="#7B5EA7" opacity="0.5"/></svg>
+    <svg class="deco a" style="left:80%; bottom:0; width:72px; height:72px;" viewBox="0 0 72 72"><rect x="8" y="8" width="56" height="56" rx="16" fill="#0FB5AE" opacity="0.35" transform="rotate(18 36 36)"/></svg>
+    <svg class="deco b" style="left:1%; bottom:-10px; width:84px; height:84px;" viewBox="0 0 84 84"><circle cx="42" cy="42" r="36" fill="#3FB27F" opacity="0.3"/></svg>
+  </div>
+  <div class="wrap">
+    <div class="eyebrow">📖 Bahasa Indonesia · Kelas IX SMP/MTs · Bab II</div>
+    <h1>Mari Membandingkan Pantun dengan Syair dan Gurindam 📜</h1>
+    <p class="desc">Membandingkan pantun dengan syair dan gurindam — dua bentuk puisi rakyat Nusantara lainnya.</p>
+    <p class="meta">✏️ Disusun oleh: Raushan Fikri, S.Pd.</p>
+  </div>
+</header>
+
+<nav>
+  <div class="navrow" role="tablist">
+    <button role="tab" aria-selected="true" data-panel="materi">📘 Materi</button>
+    <button role="tab" aria-selected="false" data-panel="latihan">✍️ Latihan</button>
+    <button role="tab" aria-selected="false" data-panel="glosarium">🔤 Glosarium</button>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<!-- MATERI -->
+<section class="panel active" id="materi">
+  <h2 class="section-title">📗 Mengenal Syair</h2>
+  <p class="sub">Pantun bukan satu-satunya puisi rakyat Nusantara. Yuk, kenali syair lewat contoh berikut!</p>
+
+  <div class="puisi">
+    <p><strong>Negeri Barbari</strong> (kutipan)</p>
+    <p><em>Bismillah itu permulaan kata<br>Dengan nama Tuhan alam semesta<br>Akan tersebut sultan mahkota<br>Di Negeri Barbari baginda bertahta</em></p>
+    <p><em>Kata orang yang empunya peri<br>Akan baginda sultan Barbari<br>Gagah berani bijak bestari<br>Khabarnya masyhur segenap negeri</em></p>
+    <p class="src">Sumber: Mohammad Arfani / Syair Abdul Muluk karya Raja Ali Haji (2020: 5–6)</p>
+  </div>
+
+  <div class="card">
+    <h3>🔑 Ciri-ciri Syair</h3>
+    <div class="func-grid">
+      <div class="func-card">📏 Satu bait = <strong>4 baris</strong></div>
+      <div class="func-card">🔢 Tiap baris <strong>8–12 suku kata</strong></div>
+      <div class="func-card">🚫 Tidak ada sampiran — <strong>semua baris adalah isi</strong></div>
+      <div class="func-card">🎵 Pola rima <strong>a-a-a-a</strong> (bunyi akhir semua baris sama)</div>
+      <div class="func-card">📖 Digunakan untuk <strong>bercerita/mengisahkan peristiwa</strong></div>
+    </div>
+  </div>
+
+  <h2 class="section-title">⚖️ Pantun vs Syair</h2>
+  <table class="gram">
+    <tr><th></th><th>Persamaan</th><th>Perbedaan</th></tr>
+    <tr>
+      <td><strong>Pantun</strong></td>
+      <td rowspan="2">Sama-sama puisi rakyat Nusantara & terdiri atas 4 baris per bait yang mengandung rima akhir.</td>
+      <td>Ada sampiran (baris 1–2) & isi (baris 3–4); rima <strong>a-b-a-b</strong>; dipakai untuk berbagai tujuan (nasihat, agama, cinta, dll.)</td>
+    </tr>
+    <tr>
+      <td><strong>Syair</strong></td>
+      <td>Tidak ada sampiran, semua baris isi; rima <strong>a-a-a-a</strong>; dipakai untuk bercerita/mengisahkan peristiwa.</td>
+    </tr>
+  </table>
+
+  <div class="list-card">
+    <h3 style="margin:0 0 4px; color:var(--blue); font-family:'Baloo 2',sans-serif;">💡 Pojok Pengetahuan — Jenis-Jenis Pantun</h3>
+    <ul>
+      <li>Pantun anak-anak: pantun bersuka cita & pantun berduka cita</li>
+      <li>Pantun orang muda: pantun berkenalan, berkasih-kasihan, perceraian, nasib/dagang</li>
+      <li>Pantun orang tua: pantun nasihat, pantun adat, pantun agama</li>
+      <li>Pantun jenaka</li>
+      <li>Pantun teka-teki</li>
+    </ul>
+    <p class="src" style="margin:8px 0 0;">Sumber: Prianto/Kamus Lengkap Pantun Bahasa Indonesia (2014: 28), dengan pengubahan</p>
+  </div>
+
+  <h2 class="section-title">📘 Mengenal Gurindam</h2>
+  <div class="card">
+    <p>Menurut KBBI, gurindam adalah <em>"sajak dua baris yang mengandung petuah atau nasihat"</em>, misalnya: <em>"Baik-baik memilih kawan, salah-salah bisa jadi lawan."</em></p>
+  </div>
+
+  <div class="puisi gurindam">
+    <p><strong>Gurindam XII Pasal ke-5</strong> (karya Raja Ali Haji)</p>
+    <p><em>Jika hendak mengenal orang berbangsa,<br>lihat kepada budi dan bahasa.</em></p>
+    <p><em>Jika hendak mengenal orang yang berbahagia,<br>sangat memeliharakan yang sia-sia.</em></p>
+    <p><em>Jika hendak mengenal orang mulia,<br>lihatlah kepada kelakuan dia.</em></p>
+    <p><em>Jika hendak mengenal orang yang berilmu,<br>bertanya dan belajar tiadalah jemu.</em></p>
+    <p><em>Jika hendak mengenal orang yang berakal,<br>di dalam dunia mengambil bekal.</em></p>
+  </div>
+
+  <div class="card">
+    <h3>🔑 Ciri-ciri Gurindam</h3>
+    <div class="func-grid">
+      <div class="func-card">📏 Satu bait = <strong>2 baris</strong></div>
+      <div class="func-card">🔢 Tiap baris <strong>10–14 suku kata</strong></div>
+      <div class="func-card">🎵 Pola rima <strong>a-a</strong> (bait berikutnya b-b, c-c, dst.)</div>
+      <div class="func-card">➡️ Baris 1 = <strong>sebab</strong>, baris 2 = <strong>akibat</strong></div>
+      <div class="func-card">💭 Isi berupa nasihat, kata mutiara, atau filosofi hidup</div>
+    </div>
+    <p style="margin-top:10px;">Gurindam terkenal biasanya memakai bahasa Melayu klasik (seperti Gurindam XII), tetapi kini gurindam juga bisa dibuat dengan kosakata bahasa Indonesia masa kini.</p>
+  </div>
+
+  <h2 class="section-title">⚖️ Pantun vs Gurindam</h2>
+  <table class="gram">
+    <tr><th></th><th>Persamaan</th><th>Perbedaan</th></tr>
+    <tr>
+      <td><strong>Pantun</strong></td>
+      <td rowspan="2">Sama-sama puisi rakyat Nusantara yang mengandung rima akhir.</td>
+      <td>4 baris: sampiran (1–2) & isi (3–4); rima <strong>a-b-a-b</strong>; untuk berbagai tujuan.</td>
+    </tr>
+    <tr>
+      <td><strong>Gurindam</strong></td>
+      <td>2 baris, tanpa sampiran — baris 1 sebab, baris 2 akibat; rima <strong>a-a</strong>; untuk nasihat/filosofi hidup.</td>
+    </tr>
+  </table>
+
+  <div class="card">
+    <h3>🎙️ Selanjutnya: Melisankan Pantun</h3>
+    <p>Setelah memahami pantun, syair, dan gurindam, saatnya membacakan pantun karyamu sendiri di depan kelas secara bergiliran!</p>
+  </div>
+</section>
+
+<!-- LATIHAN -->
+<section class="panel" id="latihan">
+  <h2 class="section-title">✅ Latihan — Ciri-ciri Syair "Negeri Barbari"</h2>
+  <p class="sub">Centang pernyataan yang menurutmu benar, lalu ketuk "Periksa Jawaban".</p>
+  <div class="checklist">
+    <label class="chk-row"><input type="checkbox" data-c="1"> Setiap bait dalam syair tersebut terdiri atas empat baris.</label>
+    <label class="chk-row"><input type="checkbox" data-c="1"> Jumlah suku kata dalam setiap baris syair tersebut antara 8–12 suku kata.</label>
+    <label class="chk-row"><input type="checkbox" data-c="1"> Semua baris dalam bait tersebut merupakan isi.</label>
+    <label class="chk-row"><input type="checkbox" data-c="1"> Syair tersebut digunakan untuk menceritakan sebuah negeri bernama Negeri Barbari.</label>
+    <label class="chk-row"><input type="checkbox" data-c="1"> Bunyi akhir setiap baris dalam bait syair tersebut sama.</label>
+    <label class="chk-row"><input type="checkbox" data-c="1"> Pola rima yang berlaku pada syair tersebut adalah a-a-a-a.</label>
+    <button class="check-btn" type="button" id="checkSyair">Periksa Jawaban</button>
+    <div class="feedback" id="fbSyair"></div>
+  </div>
+
+  <h2 class="section-title" style="margin-top:36px;">🤔 Latihan 8 — Diskusi tentang Syair</h2>
+  <p class="sub">Jawab dengan pendapatmu sendiri, lalu lihat petunjuk arah jawabannya.</p>
+
+  <div class="latihan-item">
+    <p class="nomor">1️⃣ Apa persamaan dan perbedaan syair dengan pantun?</p>
+    <textarea placeholder="Tulis jawabanmu..."></textarea>
+    <button class="reveal-btn" type="button">Lihat petunjuk</button>
+    <div class="kunci">Persamaan: sama-sama puisi rakyat 4 baris per bait dengan rima akhir. Perbedaan: syair tanpa sampiran (semua isi, rima a-a-a-a, untuk bercerita), sedangkan pantun ada sampiran+isi (rima a-b-a-b, untuk berbagai tujuan).</div>
+  </div>
+  <div class="latihan-item">
+    <p class="nomor">2️⃣ Apakah mudah menyampaikan cerita dalam bentuk syair?</p>
+    <textarea placeholder="Tulis jawabanmu..."></textarea>
+    <button class="reveal-btn" type="button">Lihat petunjuk</button>
+    <div class="kunci">Pertimbangkan: menulis syair perlu merangkai banyak bait dengan rima yang sama di setiap baris (a-a-a-a) sambil tetap menyampaikan alur cerita yang runtut.</div>
+  </div>
+  <div class="latihan-item">
+    <p class="nomor">3️⃣ Pada masa sekarang, adakah cerita yang disampaikan dalam bentuk syair?</p>
+    <textarea placeholder="Tulis jawabanmu..."></textarea>
+    <button class="reveal-btn" type="button">Lihat petunjuk</button>
+    <div class="kunci">Pikirkan karya sastra lama (hikayat bersyair) atau lagu/lirik berima yang masih bercerita hingga kini.</div>
+  </div>
+  <div class="latihan-item">
+    <p class="nomor">4️⃣ Mengapa pantun lebih banyak digunakan dalam kehidupan sehari-hari dibanding syair?</p>
+    <textarea placeholder="Tulis jawabanmu..."></textarea>
+    <button class="reveal-btn" type="button">Lihat petunjuk</button>
+    <div class="kunci">Pantun lebih singkat (cukup 1 bait), fleksibel untuk berbagai situasi (sapaan, nasihat, candaan), sedangkan syair perlu banyak bait untuk bercerita.</div>
+  </div>
+
+  <h2 class="section-title" style="margin-top:36px;">🤔 Latihan — Diskusi tentang Gurindam</h2>
+  <div class="latihan-item">
+    <p class="nomor">1️⃣ Ada berapa baris setiap bait gurindam?</p>
+    <textarea placeholder="Tulis jawabanmu..."></textarea>
+    <button class="reveal-btn" type="button">Lihat petunjuk</button>
+    <div class="kunci">Dua baris setiap bait.</div>
+  </div>
+  <div class="latihan-item">
+    <p class="nomor">2️⃣ Adakah sampiran pada gurindam?</p>
+    <textarea placeholder="Tulis jawabanmu..."></textarea>
+    <button class="reveal-btn" type="button">Lihat petunjuk</button>
+    <div class="kunci">Tidak ada. Baris pertama bukan sampiran, melainkan sebab yang mengakibatkan sesuatu pada baris kedua.</div>
+  </div>
+  <div class="latihan-item">
+    <p class="nomor">3️⃣ Apa hubungan baris pertama dan kedua dalam gurindam?</p>
+    <textarea placeholder="Tulis jawabanmu..."></textarea>
+    <button class="reveal-btn" type="button">Lihat petunjuk</button>
+    <div class="kunci">Hubungan sebab-akibat: baris pertama berisi sebab/perbuatan, baris kedua berisi akibatnya.</div>
+  </div>
+  <div class="latihan-item">
+    <p class="nomor">4️⃣ Mengapa bunyi akhir setiap baris dalam satu bait itu harus sama?</p>
+    <textarea placeholder="Tulis jawabanmu..."></textarea>
+    <button class="reveal-btn" type="button">Lihat petunjuk</button>
+    <div class="kunci">Karena itulah ciri rima gurindam (pola a-a) yang membedakannya dari bentuk puisi rakyat lain seperti pantun (a-b-a-b) dan syair (a-a-a-a).</div>
+  </div>
+  <div class="latihan-item">
+    <p class="nomor">5️⃣ Apakah gurindam digunakan hanya untuk menyampaikan pesan?</p>
+    <textarea placeholder="Tulis jawabanmu..."></textarea>
+    <button class="reveal-btn" type="button">Lihat petunjuk</button>
+    <div class="kunci">Umumnya ya — gurindam berisi nasihat, kata-kata mutiara, atau filosofi hidup, meskipun gaya penyampaiannya bisa bervariasi.</div>
+  </div>
+  <div class="latihan-item">
+    <p class="nomor">6️⃣ Bagaimana cara melestarikan gurindam sebagai kekayaan budaya Indonesia?</p>
+    <textarea placeholder="Tulis jawabanmu..."></textarea>
+    <button class="reveal-btn" type="button">Lihat petunjuk</button>
+    <div class="kunci">Pikirkan ide seperti: membuat gurindam dengan bahasa Indonesia masa kini, mempelajarinya di sekolah, membagikannya di media sosial, atau menampilkannya dalam lomba/pertunjukan budaya.</div>
+  </div>
+</section>
+
+<!-- GLOSARIUM -->
+<section class="panel" id="glosarium">
+  <h2 class="section-title">🔤 Glosarium</h2>
+  <dl>
+    <div class="gloss-item"><dt>Syair</dt><dd>Puisi rakyat Nusantara, satu bait terdiri atas 4 baris yang semuanya berisi isi (tanpa sampiran), berpola rima a-a-a-a, digunakan untuk bercerita atau mengisahkan peristiwa.</dd></div>
+    <div class="gloss-item"><dt>Gurindam</dt><dd>Puisi rakyat berupa sajak dua baris berpola rima a-a, baris pertama berisi sebab dan baris kedua berisi akibat, biasanya berisi nasihat atau filosofi hidup.</dd></div>
+    <div class="gloss-item"><dt>Bait</dt><dd>Satu kesatuan baris dalam puisi, seperti satu kelompok 4 baris pada pantun/syair atau 2 baris pada gurindam.</dd></div>
+    <div class="gloss-item"><dt>Rima a-a-a-a</dt><dd>Pola bunyi akhir pada syair, di mana keempat baris dalam satu bait berakhir dengan bunyi yang sama.</dd></div>
+    <div class="gloss-item"><dt>Rima a-a</dt><dd>Pola bunyi akhir pada gurindam, di mana kedua baris dalam satu bait berakhir dengan bunyi yang sama.</dd></div>
+    <div class="gloss-item"><dt>Sebab-Akibat (Gurindam)</dt><dd>Struktur baris gurindam: baris pertama menyatakan sebab/perbuatan, baris kedua menyatakan akibat yang ditimbulkannya.</dd></div>
+    <div class="gloss-item"><dt>Puisi Rakyat</dt><dd>Bentuk puisi lama Indonesia, meliputi pantun, syair, gurindam, mantra, talibun, karmina, dan seloka.</dd></div>
+  </dl>
+</section>
+
+</div>
+
+<footer>📜 Mari Membandingkan Pantun dengan Syair dan Gurindam · Disusun oleh Raushan Fikri, S.Pd. · Bahasa Indonesia Kelas IX SMP/MTs</footer>
+
+<script>
+const tabs = document.querySelectorAll('nav button[role="tab"]');
+const panels = document.querySelectorAll('section.panel');
+tabs.forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    tabs.forEach(t=>t.setAttribute('aria-selected','false'));
+    panels.forEach(p=>p.classList.remove('active'));
+    tab.setAttribute('aria-selected','true');
+    document.getElementById(tab.dataset.panel).classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+});
+
+document.querySelectorAll('.reveal-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const kunci = btn.nextElementSibling;
+    kunci.classList.toggle('show');
+    btn.textContent = kunci.classList.contains('show') ? 'Sembunyikan' : 'Lihat petunjuk';
+  });
+});
+
+document.getElementById('checkSyair').addEventListener('click', ()=>{
+  const boxes = document.querySelectorAll('.checklist input[type="checkbox"]');
+  let allChecked = true;
+  boxes.forEach(b=>{ if(!b.checked) allChecked = false; });
+  const fb = document.getElementById('fbSyair');
+  fb.className = 'feedback ' + (allChecked ? 'correct' : 'info');
+  fb.textContent = allChecked
+    ? '🎉 Tepat sekali! Keenam pernyataan tersebut benar sesuai ciri-ciri syair.'
+    : 'ℹ️ Sebenarnya keenam pernyataan di atas semuanya benar — coba sentang ulang untuk lihat kenapa setiap pernyataan sesuai dengan ciri-ciri syair!';
+});
+</script>
+
+</body>
+</html>
